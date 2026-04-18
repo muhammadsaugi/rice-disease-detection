@@ -1,0 +1,29 @@
+{
+  "model_name": "ResNet-50",
+  "class_names": [
+    "Bacterial_Blight",
+    "Blast",
+    "Brown_Spot",
+    "Tungro"
+  ],
+  "img_size": 224,
+  "temperature": 0.10000000149011612,
+  "test_acc": 1.0,
+  "test_f1": 1.0,
+  "ece_after_ts": 1.33514404296875e-05,
+  "kfold_mean": 0.9974153577950272,
+  "kfold_std": 0.0013704715275436145,
+  "dataset_info": {
+    "train": 3579,
+    "val": 610,
+    "test": 567,
+    "leakage_removed": 562
+  },
+  "uji_results": {
+    "UJI 1 - Data Leakage Check": "LULUS",
+    "UJI 2 - Background Sensitivity": "LULUS",
+    "UJI 3 - Robustness (Noise/Blur)": "LULUS",
+    "UJI 4 - Conf. Calibration (TS)": "LULUS",
+    "UJI 5 - 5-Fold Cross-Validation": "LULUS"
+  }
+}
