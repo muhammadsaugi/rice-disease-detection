@@ -116,14 +116,19 @@ def load_model():
             nn.Linear(in_f, len(CLASS_NAMES))
         )
 
-        # Load weights — strict=True memastikan arsitektur persis sama
-        missing, unexpected = model.load_state_dict(
-            checkpoint["state_dict"], strict=True
-        )
+        # Filter key "grad_cam_layer.*" dari state_dict.
+        # Saat training, model.grad_cam_layer = model.layer4[-1] didaftarkan
+        # sebagai sub-module sehingga tersimpan di checkpoint sebagai duplikat.
+        # Key ini tidak ada di arsitektur ResNet-50 standar, cukup di-skip.
+        raw_sd = checkpoint["state_dict"]
+        clean_sd = {k: v for k, v in raw_sd.items()
+                    if not k.startswith("grad_cam_layer.")}
+
+        missing, unexpected = model.load_state_dict(clean_sd, strict=True)
         if missing:
             return None, 1.0, {}, f"Missing keys: {missing[:3]}"
         if unexpected:
-            return None, 1.0, {}, f"Unexpected keys: {unexpected[:3]}"
+            return None, 1.0, {}, f"Unexpected keys setelah filter: {unexpected[:3]}"
 
         model.eval()
 
